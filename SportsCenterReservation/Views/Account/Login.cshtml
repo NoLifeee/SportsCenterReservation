@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<!-- Formular de autentificare -->
+<h2>Login</h2>
+
+<form asp-action="Login" method="post">
+    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+    <!-- Camp pentru username -->
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input name="username" class="form-control" required />
+    </div>
+
+    <!-- Camp pentru parola (input de tip password) -->
+    <div class="form-group">
+        <label for="password">Parolă</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+
+    <!-- Buton de submit -->
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<!-- Afiseaza mesaj de eroare daca autentificarea esueaza -->
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger mt-2">@ViewBag.Error</div>
+}

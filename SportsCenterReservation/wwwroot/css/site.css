@@ -1,0 +1,60 @@
+﻿/* Tranzitii */
+.btn {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+.navbar-brand {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .navbar-brand:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
+/* Responsivitate - Tabel */
+@media (max-width: 768px) {
+    #rezervariList {
+        overflow-x: auto; /* Scroll orizontal pe mobile */
+        display: block;
+    }
+
+    .table {
+        min-width: 800px;
+    }
+}
+
+@media (min-width: 769px) {
+    body {
+        min-width: 100% !important; /* Anuleaza latimea fixa anterioara */
+        overflow-x: visible;
+    }
+
+    .table {
+        width: 100% !important; /* Tabelul umple spatiul */
+        min-width: auto !important;
+    }
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.alert {
+    animation: fadeIn 0.5s;
+}

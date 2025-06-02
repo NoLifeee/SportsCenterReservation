@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Despre noi";
+}
+
+<div class="about-page">
+    <!-- Sectiunea hero cu titlu si slogan -->
+    <div class="hero-section py-5 text-center">
+        <div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 200px;">
+            <h1 class="display-3 fw-bold mb-3">SportsCenter</h1>
+            <p class="lead fs-4 fst-italic">Pasiune pentru sport și excelență</p>
+        </div>
+    </div>
+
+    <!-- Continut principal -->
+    <div class="container py-5">
+        <!-- Sectiunea "Cine suntem?" -->
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <h2 class="text-primary mb-4">Cine suntem?</h2>
+                <p class="lead">
+                    SportsCenter este centrul tău premium pentru sport și recreere, situat în inima orașului.
+                    Cu experiență în industria sportului, oferim facilități de top și programe
+                    adaptate nevoilor tuturor sportivilor.
+                </p>
+            </div>
+        </div>
+
+        <!-- Sectiunea "Misiunea noastră" cu border-left primar -->
+        <div class="card mission-card border-primary mb-5">
+            <div class="card-body">
+                <h3 class="card-title text-primary"><i class="fas fa-bullseye me-2"></i>Misiunea noastră</h3>
+                <p class="card-text">
+                    Să inspirăm și să susținem un stil de viață activ prin facilități de calitate,
+                    antrenori profesioniști și un mediu prietenos pentru toți membrii.
+                </p>
+            </div>
+        </div>
+
+        <!-- Sectiunea servicii cu card-uri animate -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-dumbbell fa-3x text-primary mb-3"></i>
+                        <h4>Fitness Modern</h4>
+                        <p>Echipament de ultimă generație pentru antrenamente eficiente</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-futbol fa-3x text-primary mb-3"></i>
+                        <h4>Terenuri Sportive</h4>
+                        <p>Terenuri de tenis, fotbal și baschet cu suprafață profesională</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h4>Antrenori Certificați</h4>
+                        <p>Echipă de specialiști în fitness și sporturi de performanță</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sectiunea de contact cu animatie la hover -->
+        <div class="contact-section rounded-3 text-center">
+            <h3 class="text-primary mb-4"><i class="fas fa-envelope me-2"></i>Contact</h3>
+            <p class="lead mb-1">Suntem mereu disponibili pentru întrebări și sugestii!</p>
+            <div class="d-flex justify-content-center align-items-center mt-3">
+                <i class="fas fa-at me-2 text-primary"></i>
+                <a class="text-decoration-none h5">
+                    cristianmuntean44@gmail.com
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stiluri specifice pentru pagina -->
+<style>
+    /* Stiluri pentru sectiunea hero */
+    .hero-section {
+        color: #0a58ca;
+    }
+
+    /* Stiluri pentru card-ul misiunii */
+    .mission-card {
+        background-color: #f8f9fa;
+        border-left: 5px solid #0d6efd !important;
+    }
+
+    /* Animatie pentru sectiunea de contact */
+    .contact-section:hover {
+        transform: translateY(-5px);
+    }
+</style>

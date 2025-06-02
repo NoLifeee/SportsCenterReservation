@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "SportsCenter";
+}
+
+<!-- Sectiunea principala cu buton de rezervare rapida -->
+<div class="hero py-5" data-track="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 mb-3">Bun venit la SportsCenter</h1>
+        <div class="row g-4 justify-content-center">
+            <!-- Butonul "Rezerva Rapid" care redirectioneaza catre formular -->
+            <div class="col-md-4" data-track="quick-reserve">
+                <a asp-controller="Rezervare" asp-action="Create"
+                   class="card h-100 shadow hover-scale">
+                    <div class="card-body">
+                        <i class="fas fa-running fa-3x text-accent"></i>
+                        <h4>Rezervă Rapid</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sectiunea calendarului cu disponibilitati -->
+<div class="container py-5">
+    <h2 class="text-center mb-4"><i class="fas fa-calendar-alt me-2"></i>Disponibilitate</h2>
+    <div id="calendar"></div>
+</div>
+
+<!-- Script pentru initializarea calendarului FullCalendar -->
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+                initialView: 'dayGridMonth',
+                events: '/Rezervare/GetCalendarData', // Endpoint pentru date
+                timeZone: 'Europe/Bucharest',
+                locale: 'ro',
+                displayEventTime: false,
+                eventDidMount: function(info) {
+                    // Tooltip cu orele evenimentelor
+                    new bootstrap.Tooltip(info.el, {
+                        title: `${formatTime(info.event.start)} - ${formatTime(info.event.end)}`,
+                        placement: 'top'
+                    });
+                }
+            });
+            calendar.render();
+
+            // Formateaza ora pentru tooltip
+            function formatTime(date) {
+                return date.toLocaleTimeString('ro-RO', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+        });
+    </script>
+}

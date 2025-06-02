@@ -1,0 +1,143 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery Antiforgery
+
+@model IEnumerable<SportsCenterReservation.Models.Rezervare>
+
+@{
+	ViewData["Title"] = "Listă rezervări";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+	<a asp-action="Create" class="btn btn-primary" id="btnAdauga" onclick="contorizeaza('btnAdauga')">Adaugă rezervare</a>
+</p>
+
+<!-- Token pentru prevenirea atacurilor CSRF -->
+<input type="hidden" id="csrfToken" value="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Client</th>
+			<th>Serviciu</th>
+			<th>Data</th>
+			<th>Ora</th>
+			<th>Durată (ore)</th>
+			<th>Acțiuni</th>
+		</tr>
+	</thead>
+	<tbody id="rezervariList">
+		@foreach (var item in Model.OrderBy(r => r.Ordine))
+		{
+			<tr data-id="@item.Id">
+				<td>@item.Client</td>
+				<td>@item.Serviciu?.Nume</td>
+				<td>@item.Data.ToShortDateString()</td>
+				<td>@item.Ora</td>
+				<td>@item.DurataOre</td>
+				<td>
+					@if (User.IsInRole("Admin") || item.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value))
+					{
+						<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning btn-action me-2" data-action="edit" onclick="contorizeaza('btnEdit')">Editează</a>
+						<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger btn-action me-2" data-action="delete" onclick="contorizeaza('btnDelete')">Șterge</a>
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<!-- Ferestre modale de confirmare pentru stergere -->
+@foreach (var item in Model)
+{
+	<div class="modal fade" id="deleteModal-@item.Id" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Ștergere rezervare</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					Ești sigur că vrei să ștergi rezervarea pentru @item.Client?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nu</button>
+					<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Da, șterge</a>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<!-- Stil pentru randul in timpul drag & drop -->
+<style>
+	.sortable-ghost {
+		opacity: 0.6;
+		background-color: #f0f0f0;
+	}
+</style>
+
+<!-- Script pentru functionalitatea drag & drop a randurilor (numai pentru admini) -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+	@if (User.IsInRole("Admin"))
+	{
+		<text>
+					new Sortable(document.getElementById('rezervariList'), {
+						animation: 150,
+						ghostClass: 'sortable-ghost',
+						onEnd: function (evt) {
+							const ids = Array.from(evt.to.children).map((row, index) => ({
+								id: row.dataset.id,
+								ordine: index
+							}));
+
+							// Trimite ordinea noua catre server
+							fetch('/Rezervare/ActualizeazaOrdine', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+									'RequestVerificationToken': document.getElementById('csrfToken').value
+								},
+								body: JSON.stringify(ids)
+							});
+						}
+					});
+		</text>
+	}
+</script>
+
+<script>
+	// Functie pentru contorizarea apasarilor pe butoane
+	function contorizeaza(controlId) {
+		let count = localStorage.getItem(controlId) || 0;
+		count++;
+		localStorage.setItem(controlId, count);
+		rearanjeazaButoane();
+	}
+
+	// Rearanjeaza butoanele in functie de frecventa utilizarii
+	function rearanjeazaButoane() {
+		const countEdit = parseInt(localStorage.getItem('btnEdit') || 0);
+		const countDelete = parseInt(localStorage.getItem('btnDelete') || 0);
+
+		document.querySelectorAll('.btn-action').forEach(button => {
+			const parent = button.parentElement;
+			const buttons = Array.from(parent.querySelectorAll('.btn-action'));
+
+			buttons.sort((a, b) => {
+				const aCount = a.dataset.action === 'edit' ? countEdit : countDelete;
+				const bCount = b.dataset.action === 'edit' ? countEdit : countDelete;
+				return bCount - aCount;
+			});
+
+			buttons.forEach(btn => parent.appendChild(btn));
+		});
+	}
+
+	// Apel initial la incarcarea paginii pentru a aplica rearanjarea
+	document.addEventListener('DOMContentLoaded', rearanjeazaButoane);
+</script>

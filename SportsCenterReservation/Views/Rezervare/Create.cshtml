@@ -1,0 +1,79 @@
+﻿@model SportsCenterReservation.Models.Rezervare
+
+@{
+    ViewData["Title"] = "Adaugă rezervare";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Formular pentru crearea unei rezervari -->
+<form asp-action="Create" method="post">
+    <!-- Camp pentru numele clientului -->
+    <div class="form-group">
+        <label asp-for="Client" class="control-label"></label>
+        <input asp-for="Client" class="form-control" />
+        <span asp-validation-for="Client" class="text-danger"></span>
+    </div>
+
+    <!-- Camp pentru data rezervarii (cu restrictie minima: maine) -->
+    <div class="form-group">
+        <label asp-for="Data" class="control-label"></label>
+        <input asp-for="Data" class="form-control" type="date" />
+        <span asp-validation-for="Data" class="text-danger"></span>
+    </div>
+
+    <!-- Camp pentru ora rezervarii (format HH:mm) -->
+    <div class="form-group">
+        <label asp-for="Ora" class="control-label"></label>
+        <input asp-for="Ora" class="form-control" />
+        <span asp-validation-for="Ora" class="text-danger"></span>
+    </div>
+
+    <!-- Dropdown pentru selectarea duratei (1-4 ore) -->
+    <div class="form-group">
+        <label asp-for="DurataOre" class="control-label">Durată (ore)</label>
+        <select asp-for="DurataOre" class="form-control">
+            <option value="">Selectați durata</option>
+            <option value="1">1 oră</option>
+            <option value="2">2 ore</option>
+            <option value="3">3 ore</option>
+            <option value="4">4 ore</option>
+        </select>
+        <span asp-validation-for="DurataOre" class="text-danger"></span>
+    </div>
+
+    <!-- Dropdown pentru selectarea serviciului -->
+    <div class="form-group">
+        <label asp-for="ServiciuId" class="control-label"></label>
+        <select asp-for="ServiciuId" class="form-control" asp-items="ViewBag.Servicii">
+            <option value="">Selectați un serviciu</option>
+        </select>
+        <span asp-validation-for="ServiciuId" class="text-danger"></span>
+    </div>
+
+    <!-- Butoane de actiune -->
+    <button type="submit" class="btn btn-primary mt-2">Salvează</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Renunță</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Blocheaza selectarea unei date anterioare zilei de maine
+        document.addEventListener('DOMContentLoaded', function() {
+            var dataInput = document.getElementById('Data');
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dataInput.min = tomorrow.toISOString().split('T')[0];
+        });
+    </script>
+
+    <script>
+        // Afiseaza un spinner pe buton la submit
+        document.querySelector('form').addEventListener('submit', function() {
+            var submitButton = document.querySelector('button[type="submit"]');
+            submitButton.innerHTML =
+                '<span class="spinner-border spinner-border-sm" role="status"></span> Se procesează...';
+        });
+    </script>
+}

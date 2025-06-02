@@ -1,0 +1,17 @@
+﻿@model SportsCenterReservation.Models.Rezervare
+
+@{
+    ViewData["Title"] = "Șterge rezervare";
+    Layout = "_Layout";
+}
+
+<!-- Confirmare stergere rezervare -->
+<h2>@ViewData["Title"]</h2>
+<h4>Ești sigur că vrei să ștergi rezervarea pentru @Model.Client din data de @Model.Data.ToShortDateString()?</h4>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Șterge</button>
+    <a asp-action="Index" class="btn btn-secondary">Renunță</a>
+</form>
